@@ -1,29 +1,34 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
+
+import { PrismaService } from 'src/shared/prisma/prisma.service'
 import { CreateJournalDto } from './dto/create-journal.dto'
 import { UpdateJournalDto } from './dto/update-journal.dto'
-import { PrismaService } from 'src/shared/prisma/prisma.service'
 
 @Injectable()
 export class JournalService {
   constructor(private db: PrismaService) {}
 
   async create(data: CreateJournalDto) {
-    console.log('data', data)
+    return await this.db.journal.create({ data })
   }
 
-  findAll() {
-    return `This action returns all journal`
+  async findAll() {
+    return await this.db.journal.findMany()
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} journal`
+  async findOne(id: string) {
+    const data = await this.db.journal.findUnique({ where: { id } })
+    if (!data) {
+      throw new NotFoundException('Journal not found')
+    }
+    return data
   }
 
-  update(id: number, updateJournalDto: UpdateJournalDto) {
-    return `This action updates a #${id} journal`
+  async update(id: string, data: UpdateJournalDto) {
+    return await this.db.journal.update({ where: { id }, data })
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} journal`
+  async remove(id: string) {
+    await this.db.journal.delete({ where: { id } })
   }
 }
