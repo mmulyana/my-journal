@@ -1,4 +1,5 @@
-import { ApiProperty } from "@nestjs/swagger"
+import { ApiProperty } from '@nestjs/swagger'
+import { JournalTags, Tag } from '@prisma/client'
 
 export class Journal {
   @ApiProperty()
@@ -11,8 +12,16 @@ export class Journal {
   content: string
 
   @ApiProperty()
+  isFavorite: boolean
+
+  @ApiProperty()
   createdAt: Date
 
   @ApiProperty()
   updatedAt: Date
+
+  @ApiProperty()
+  tags: JournalTags & {
+    tag: Tag
+  }
 }

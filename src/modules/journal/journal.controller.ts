@@ -12,6 +12,7 @@ import { ResponseMessage } from 'src/shared/utils/response-message.decorator'
 import { CreateJournalDto } from './dto/create-journal.dto'
 import { UpdateJournalDto } from './dto/update-journal.dto'
 import { JournalService } from './journal.service'
+import { AddTagDto } from './dto/add-tag.dto'
 
 @Controller('journal')
 export class JournalController {
@@ -45,5 +46,16 @@ export class JournalController {
   @ResponseMessage('Journal deleted successfully')
   remove(@Param('id') id: string) {
     return this.journalService.remove(id)
+  }
+
+  @Post(':id/tags/add')
+  @ResponseMessage('Tag successfully added')
+  addTag(@Param('id') id: string, @Body() addTagDto: AddTagDto) {
+    return this.journalService.addTag(id, addTagDto)
+  }
+  @Post(':id/tags/remove')
+  @ResponseMessage('Tag successfully removed')
+  removeTag(@Param('id') id: string, @Body() addTagDto: AddTagDto) {
+    return this.journalService.removeTag(id, addTagDto)
   }
 }
