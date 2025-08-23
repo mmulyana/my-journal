@@ -48,7 +48,6 @@ export class JournalService {
   }
 
   async addTag(id: string, data: AddTagDto) {
-    console.log('data', data)
     const journal = await this.db.journal.findUnique({ where: { id } })
     if (!journal) {
       throw new NotFoundException('Journal not found')
